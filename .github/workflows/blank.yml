@@ -5,18 +5,12 @@ on:
     branches:
       - master
       - release-*
-
+  issue_comment:
+    types: [created, edited]
 jobs:
-
   pull:
+    if: ${{github.event_name != 'issue_comment' || (contains(github.event.comment.html_url, join(['/pull/',${{ github.event.number }}],''))&&contains(github.event.comment.body, '/run-all-test'))}}
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        job:
-          - verify
-          - build
-          - test
     steps:
       - name: test
         run: echo help
