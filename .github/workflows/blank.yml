@@ -5,12 +5,12 @@ on:
     branches:
       - master
       - release-*
-  issue_comment:
+  pull_request_review:
     types: [created, edited]
 jobs:
   pull:
-    if: ${{github.event_name != 'issue_comment' || (contains(github.event.comment.html_url, join(['/pull/',${{ github.event.number }}],''))&&contains(github.event.comment.body, '/run-all-test'))}}
+    #if: ${{github.event_name != 'pull_request_review' || contains(github.event.review.body, '/run-all-tests')}}
     runs-on: ubuntu-latest
     steps:
       - name: test
-        run: echo help
+        run: echo ${{github.event.review.body}}
